@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Interaktiver Prototyp für Forecast und Vertriebssteuerung Münster" />
+    <title>Forecast Münster</title>
+    <link rel="stylesheet" href="assets/styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Zum Inhalt springen</a>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Hauptnavigation">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span>Forecast</span>
+        </div>
+        <nav id="primary-nav">
+          <button class="nav-item is-active" data-view="overview" aria-current="page">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 13h6V4H4v9Zm0 7h6v-4H4v4Zm10 0h6v-9h-6v9Zm0-16v4h6V4h-6Z"/></svg>
+            Übersicht
+          </button>
+          <button class="nav-item" data-view="forecast">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 19V9m5 10V5m5 14v-7m5 7V3"/></svg>
+            Forecast
+          </button>
+          <button class="nav-item" data-view="pipeline">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 5h16M7 12h10m-7 7h4"/></svg>
+            Pipeline
+          </button>
+          <button class="nav-item" data-view="team">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M16 20v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2m7-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm13 10v-2a4 4 0 0 0-3-3.9m-2-12a4 4 0 0 1 0 7.75"/></svg>
+            Mitarbeiter
+          </button>
+        </nav>
+        <div class="sidebar-foot">
+          <span class="status-dot"></span>
+          <span>Manuelle Eingabe · lokal gespeichert</span>
+        </div>
+      </aside>
+
+      <main id="main" tabindex="-1">
+        <header class="topbar">
+          <button class="mobile-menu" id="mobile-menu" aria-label="Navigation öffnen" aria-expanded="false">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          </button>
+          <div>
+            <p class="eyebrow">Münster / Möhnesee</p>
+            <h1 id="page-title">Vertriebsübersicht</h1>
+          </div>
+          <div class="top-actions">
+            <label class="field compact-field">
+              <span>Zeitraum</span>
+              <select id="period-filter">
+                <option value="july">Juli 2026</option>
+                <option value="june">Juni 2026</option>
+              </select>
+            </label>
+            <button class="avatar" aria-label="Profil von David Wrobel">DW</button>
+          </div>
+        </header>
+
+        <div class="content">
+          <section id="overview-view" class="view is-active" aria-labelledby="overview-heading">
+            <div class="page-intro">
+              <div>
+                <p class="eyebrow">Stand 20. Juli 2026</p>
+                <h2 id="overview-heading">Guten Morgen, David</h2>
+                <p id="overview-summary">Der Monatsforecast wird aus deinen gespeicherten Wochenwerten berechnet.</p>
+              </div>
+              <span class="data-badge"><span class="status-dot"></span> Datenstand heute, 08:30</span>
+            </div>
+
+            <div class="kpi-grid" id="kpi-grid"></div>
+
+            <div class="dashboard-grid">
+              <article class="panel chart-panel">
+                <div class="panel-head">
+                  <div>
+                    <p class="eyebrow">Monatsverlauf</p>
+                    <h3>Forecast, Ist und Ziel</h3>
+                  </div>
+                  <div class="legend" aria-label="Legende">
+                    <span><i class="line forecast"></i>Forecast</span>
+                    <span><i class="line actual"></i>Ist</span>
+                    <span><i class="line target"></i>Ziel</span>
+                  </div>
+                </div>
+                <div id="trend-chart" class="chart" role="img" aria-label="Kumulativer Auftragseingang für Juli: Forecast unter dem Monatsziel"></div>
+              </article>
+
+              <article class="panel action-panel">
+                <div class="panel-head">
+                  <div>
+                    <p class="eyebrow">Handlungsbedarf</p>
+                    <h3>Größter Hebel</h3>
+                  </div>
+                  <span id="action-status" class="risk-pill">Risiko</span>
+                </div>
+                <div class="action-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M12 3v10m0 4v.01M4.9 20h14.2a2 2 0 0 0 1.72-3L13.72 5a2 2 0 0 0-3.44 0L3.18 17a2 2 0 0 0 1.72 3Z"/></svg>
+                </div>
+                <h4 id="action-title">Forecast wird berechnet</h4>
+                <p id="action-copy">Der Handlungsimpuls wird aus deinen gespeicherten Wochenwerten abgeleitet.</p>
+                <button class="text-button" data-view-link="forecast">Forecast im Detail prüfen <span aria-hidden="true">→</span></button>
+              </article>
+            </div>
+
+            <article class="panel week-panel">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">Nächste Wochen</p>
+                  <h3>Forecast-Risiken früh erkennen</h3>
+                </div>
+                <button class="secondary-button" data-view-link="forecast">Alle Wochen anzeigen</button>
+              </div>
+              <div id="week-cards" class="week-cards"></div>
+            </article>
+          </section>
+
+          <section id="forecast-view" class="view" aria-labelledby="forecast-heading">
+            <div class="page-intro forecast-intro">
+              <div>
+                <p class="eyebrow">Operative Wochenansicht</p>
+                <h2 id="forecast-heading">Forecast</h2>
+                <p>Wähle eine Woche, trage die Werte ein und speichere sie. Berechnete Felder aktualisieren sich sofort.</p>
+              </div>
+              <div class="filter-row">
+                <label class="field">
+                  <span>Team</span>
+                  <select><option>Alle Mitarbeiter</option><option>Linus Heidrich</option><option>Nils Henning</option></select>
+                </label>
+                <label class="field">
+                  <span>Monat</span>
+                  <select><option>Juli 2026</option><option>August 2026</option></select>
+                </label>
+              </div>
+            </div>
+
+            <div class="forecast-layout">
+              <article class="panel table-panel">
+                <div class="table-scroll">
+                  <table>
+                    <caption class="sr-only">Forecast-Werte nach Kalenderwoche</caption>
+                    <thead><tr><th>Woche</th><th>Pipeline</th><th>CR</th><th>Forecast</th><th>Ist</th><th>Ziel</th><th>Status</th></tr></thead>
+                    <tbody id="forecast-table"></tbody>
+                  </table>
+                </div>
+              </article>
+
+              <aside class="panel detail-panel entry-panel">
+                <div class="panel-head">
+                  <div>
+                    <p class="eyebrow">Manuelle Dateneingabe</p>
+                    <h3 id="detail-week">KW 29</h3>
+                  </div>
+                  <div class="entry-state">
+                    <span id="detail-status" class="status-pill"></span>
+                    <span id="save-state" class="save-state">Gespeichert</span>
+                  </div>
+                </div>
+
+                <form id="week-entry-form" novalidate>
+                  <fieldset class="entry-fieldset">
+                    <legend>Von dir eingetragene Werte</legend>
+                    <p class="entry-hint"><span class="manual-key" aria-hidden="true"></span> Weiße Felder werden manuell gepflegt.</p>
+                    <div class="entry-grid">
+                      <label class="entry-field">
+                        <span>Anzahl Angebote</span>
+                        <input id="input-offers" name="offers" type="number" min="0" step="1" inputmode="numeric" required />
+                        <small>Neu erstellte Angebote dieser Kohorte</small>
+                      </label>
+                      <label class="entry-field">
+                        <span>Pipelinevolumen</span>
+                        <div class="input-with-unit"><input id="input-pipeline" name="pipeline" type="number" min="0" step="1000" inputmode="decimal" required /><span>€</span></div>
+                        <small>Volumen der neu erstellten Pipeline</small>
+                      </label>
+                      <label class="entry-field assumption-field">
+                        <span>Forecast Conversion Rate</span>
+                        <div class="input-with-unit"><input id="input-cr" name="cr" type="number" min="0" max="100" step="0.1" inputmode="decimal" required /><span>%</span></div>
+                        <small>Bewusste Annahme für diese Woche</small>
+                      </label>
+                      <label class="entry-field assumption-field">
+                        <span>Cycle Time</span>
+                        <div class="input-with-unit"><input id="input-cycle" name="cycle" type="number" min="0" max="365" step="1" inputmode="numeric" required /><span>Tage</span></div>
+                        <small>Zeitversatz bis zum Auftragseingang</small>
+                      </label>
+                      <label class="entry-field">
+                        <span>Ist-Auftragseingang</span>
+                        <div class="input-with-unit"><input id="input-actual" name="actual" type="number" min="0" step="1000" inputmode="decimal" required /><span>€</span></div>
+                        <small>Realisierter Auftragseingang</small>
+                      </label>
+                      <label class="entry-field">
+                        <span>Wochenziel</span>
+                        <div class="input-with-unit"><input id="input-target" name="target" type="number" min="0" step="1000" inputmode="decimal" required /><span>€</span></div>
+                        <small>Geplantes AE-Ziel dieser Woche</small>
+                      </label>
+                      <label class="entry-field">
+                        <span>Ø Auftragswert</span>
+                        <div class="input-with-unit"><input id="input-aov" name="aov" type="number" min="0" step="100" inputmode="decimal" required /><span>€</span></div>
+                        <small>Durchschnittlicher Wert je Auftrag</small>
+                      </label>
+                    </div>
+                    <p id="entry-error" class="entry-error" role="alert"></p>
+                  </fieldset>
+
+                  <section class="calculation-preview" aria-labelledby="calculation-heading" aria-live="polite">
+                    <div class="calculation-heading">
+                      <div>
+                        <p class="eyebrow">Automatisch berechnet</p>
+                        <h4 id="calculation-heading">Forecast-Auftragseingang</h4>
+                      </div>
+                      <span class="calculated-key">Berechnet</span>
+                    </div>
+                    <strong id="detail-result" class="calculation-result"></strong>
+                    <div class="formula" id="detail-formula"></div>
+                    <dl class="calculation-meta">
+                      <div><dt>Abweichung zum Ziel</dt><dd id="detail-gap"></dd></div>
+                      <div><dt>Benötigte zusätzliche Pipeline</dt><dd id="detail-needed-pipeline"></dd></div>
+                    </dl>
+                  </section>
+
+                  <div class="explanation">
+                    <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 17v-6m0-4v.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
+                    <p id="detail-explanation"></p>
+                  </div>
+
+                  <div class="entry-actions">
+                    <button type="button" id="discard-button" class="secondary-button" disabled>Änderungen verwerfen</button>
+                    <button type="submit" id="save-button" class="primary-button">Woche speichern</button>
+                  </div>
+                  <p id="last-saved" class="last-saved"></p>
+                </form>
+              </aside>
+            </div>
+          </section>
+
+          <section id="placeholder-view" class="view" aria-labelledby="placeholder-heading">
+            <div class="empty-state panel">
+              <span class="empty-icon"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 19V9m5 10V5m5 14v-7m5 7V3"/></svg></span>
+              <p class="eyebrow">Nächste Ausbaustufe</p>
+              <h2 id="placeholder-heading">Diese Ansicht entsteht als Nächstes</h2>
+              <p>Der erste Prototyp fokussiert bewusst Übersicht und Forecast. So können wir Informationsarchitektur und Berechnungslogik zuerst gemeinsam validieren.</p>
+              <button class="primary-button" data-view-link="overview">Zur Übersicht</button>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+    <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+    <script src="assets/app.js"></script>
+  </body>
+</html>
